@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Rent Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .rent-widget {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Demo Rent Widget</h1>
+    
+    <div class="rent-widget">
+        <h2>Providencia - 60m²</h2>
+        <div id="widget-providencia"></div>
+    </div>
+
+    <div class="rent-widget">
+        <h2>Ñuñoa - 45m²</h2>
+        <div id="widget-nunoa"></div>
+    </div>
+
+    <script>
+        // Función para cargar el widget
+        function loadWidget(elementId, comuna, m2) {
+            fetch(`http://localhost:3000/api/predict?comuna=${encodeURIComponent(comuna)}&m2=${m2}`)
+                .then(response => response.json())
+                .then(data => {
+                    const element = document.getElementById(elementId);
+                    element.innerHTML = `
+                        <p>Rango estimado: $${data.min.toLocaleString()} - $${data.max.toLocaleString()}</p>
+                        <p>Basado en ${data.count} propiedades similares</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById(elementId).innerHTML = 'Error al cargar el widget';
+                });
+        }
+
+        // Cargar widgets
+        loadWidget('widget-providencia', 'Providencia', 60);
+        loadWidget('widget-nunoa', 'Ñuñoa', 45);
+    </script>
+</body>
+</html> 
