@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'No found' }, { status: 404 });
   }
 
-  const rents = listings.map(l => l.rentCLP);
+  const rents = listings.map((l: { rentCLP: number }) => l.rentCLP);
   const min = Math.min(...rents);
   const max = Math.max(...rents);
 
