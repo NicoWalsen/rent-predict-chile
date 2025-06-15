@@ -1,61 +1,42 @@
-(function() {
+(async () => {
   const script = document.currentScript;
-  const commune = script.getAttribute('data-comuna');
-  const m2 = script.getAttribute('data-m2');
-  const bedrooms = script.getAttribute('data-bedrooms');
-  const bathrooms = script.getAttribute('data-bathrooms');
+  const { comuna, m2, bedrooms, bathrooms } = script.dataset;
 
-  if (!commune || !m2 || !bedrooms || !bathrooms) {
-    console.error('Faltan atributos requeridos en el script');
-    return;
+  // Crear el div del widget
+  const widget = document.createElement('div');
+  widget.id = 'rw-widget';
+  widget.style.cssText = `
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  `;
+
+  // Mostrar estado de carga
+  widget.textContent = 'Calculando...';
+
+  try {
+    // Insertar antes del script
+    script.parentNode.insertBefore(widget, script);
+
+    // Hacer la petición a la API
+    const response = await fetch(`/api/predict?comuna=${encodeURIComponent(comuna)}&m2=${encodeURIComponent(m2)}`);
+    const data = await response.json();
+
+    if (response.status === 200) {
+      // Formatear números con separadores de miles
+      const min = new Intl.NumberFormat('es-CL').format(data.min);
+      const max = new Intl.NumberFormat('es-CL').format(data.max);
+      widget.textContent = `CLP ${min} – ${max} (${data.count} avisos)`;
+    } else if (response.status === 404) {
+      widget.textContent = 'Sin datos suficientes';
+    } else {
+      widget.textContent = 'Error interno';
+    }
+  } catch (error) {
+    console.error('Error en el widget:', error);
+    widget.textContent = 'Error de conexión';
   }
-
-  const url = new URL('/api/predict', window.location.origin);
-  url.searchParams.set('comuna', commune);
-  url.searchParams.set('m2', m2);
-  url.searchParams.set('bedrooms', bedrooms);
-  url.searchParams.set('bathrooms', bathrooms);
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      if (data.error) {
-        console.error('Error:', data.error);
-        return;
-      }
-
-      const container = document.createElement('div');
-      container.style.cssText = `
-        padding: 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.5rem;
-        background: white;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        font-family: system-ui, -apple-system, sans-serif;
-      `;
-
-      const title = document.createElement('h3');
-      title.textContent = 'Rango estimado de arriendo';
-      title.style.cssText = `
-        margin: 0 0 0.5rem 0;
-        font-size: 1.1rem;
-        color: #1a202c;
-      `;
-
-      const range = document.createElement('p');
-      range.textContent = `$${data.min.toLocaleString()} - $${data.max.toLocaleString()} CLP`;
-      range.style.cssText = `
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #2d3748;
-      `;
-
-      container.appendChild(title);
-      container.appendChild(range);
-      script.parentNode.insertBefore(container, script.nextSibling);
-    })
-    .catch(error => {
-      console.error('Error al obtener el rango:', error);
-    });
 })(); 

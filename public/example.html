@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Widget de Arriendo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .example {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Widget de Arriendo</h1>
+    
+    <div class="example">
+        <h2>Ejemplo en vivo:</h2>
+        <script src="/embed.js"
+                data-comuna="Providencia"
+                data-m2="60"
+                data-bedrooms="2"
+                data-bathrooms="1"></script>
+    </div>
+
+    <div class="example">
+        <h2>Cómo usar:</h2>
+        <pre><code>&lt;script src="https://rent-widget.vercel.app/embed.js"
+        data-comuna="Providencia"
+        data-m2="60"
+        data-bedrooms="2"
+        data-bathrooms="1"&gt;&lt;/script&gt;</code></pre>
+    </div>
+</body>
+</html> 
