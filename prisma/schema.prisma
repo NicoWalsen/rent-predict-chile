@@ -19,4 +19,13 @@ model Listing {
   updatedAt DateTime @updatedAt
 
   @@map("Listing")
+  @@unique([comuna, m2])
+}
+
+model ScrapeLog {
+  id          Int      @id @default(autoincrement())
+  startedAt   DateTime @default(now())
+  created     Int
+  updated     Int
+  durationMs  Int
 }
