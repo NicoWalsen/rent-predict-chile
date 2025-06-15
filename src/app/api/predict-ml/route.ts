@@ -1,32 +1,36 @@
 import { readFileSync } from 'fs';
 import { NextResponse } from 'next/server';
-import joblib from '@swc/helpers/lib/_joblib';
 
 export const runtime = 'nodejs';
 
-// Cargar modelo y columnas
-const [model, cols] = joblib.loadSync('public/model.joblib');
+// Cargar modelo
+const model = JSON.parse(readFileSync('public/model.json', 'utf-8'));
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const commune = searchParams.get('comuna');
+    const comuna = searchParams.get('comuna')?.toLowerCase();
     const m2 = Number(searchParams.get('m2'));
-    const bedrooms = Number(searchParams.get('bedrooms') || '0');
-    const bathrooms = Number(searchParams.get('bathrooms') || '0');
 
-    if (!commune || !m2) {
+    if (!comuna || !m2) {
       return NextResponse.json({ error: 'Parámetros inválidos' }, { status: 400 });
     }
 
-    // Preparar features
-    const sample: any = { area_m2: m2, bedrooms, bathrooms };
-    cols.forEach(c => sample[c] = c === `commune_${commune}` ? 1 : 0);
+    // Filtrar datos por comuna y m2 similar
+    const similarListings = model.data.filter((l: any) => 
+      l.comuna.toLowerCase() === comuna &&
+      Math.abs(l.m2 - m2) <= 10
+    );
 
-    // Hacer predicción
-    const pred = model.predict([cols.map(c => sample[c] || 0)])[0];
+    if (similarListings.length === 0) {
+      return NextResponse.json({ error: 'No hay datos suficientes' }, { status: 404 });
+    }
 
-    return NextResponse.json({ predicted: Math.round(pred) });
+    // Calcular precio promedio
+    const prices = similarListings.map((l: any) => l.precio);
+    const predicted = Math.round(prices.reduce((a: number, b: number) => a + b, 0) / prices.length);
+
+    return NextResponse.json({ predicted });
   } catch (error) {
     console.error('Error en predict-ml:', error);
     return NextResponse.json({ error: 'Error interno' }, { status: 500 });

@@ -1,19 +1,34 @@
 'use client';
 
 import { PrismaClient } from '@prisma/client';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const prisma = new PrismaClient();
 
-export default async function Admin() {
+interface PriceBucket {
+  bucket: string;
+  count: number;
+}
+
+export default async function AdminPage() {
   const total = await prisma.listing.count();
   const last = await prisma.scrapeLog.findFirst({ 
     orderBy: { startedAt: 'desc' } 
   });
   
-  const data = await prisma.$queryRaw`
-    SELECT width_bucket(rent_clp, 0, 1000000, 10) AS bucket, COUNT(*)::int AS n
-    FROM "Listing" GROUP BY bucket ORDER BY bucket;
+  const data: PriceBucket[] = await prisma.$queryRaw`
+    SELECT 
+      CASE 
+        WHEN precio < 300000 THEN '0-300k'
+        WHEN precio < 500000 THEN '300k-500k'
+        WHEN precio < 700000 THEN '500k-700k'
+        WHEN precio < 1000000 THEN '700k-1M'
+        ELSE '1M+'
+      END as bucket,
+      COUNT(*) as count
+    FROM "Listing"
+    GROUP BY bucket
+    ORDER BY MIN(precio)
   `;
 
   return (
@@ -33,7 +48,7 @@ export default async function Admin() {
               label={{ value: 'Cantidad de Avisos', angle: -90, position: 'insideLeft' }}
             />
             <Tooltip />
-            <Bar dataKey="n" fill="#8884d8" />
+            <Bar dataKey="count" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
       </div>

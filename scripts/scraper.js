@@ -19,8 +19,18 @@ const urls = {
   ]
 };
 
+const urlsPI = Array.from({length: 10}, (_, i) => 
+  `https://www.portalinmobiliario.com/arriendo/departamento/region-metropolitana?page=${i+1}`
+);
+const urlsYapo = Array.from({length: 10}, (_, i) => 
+  `https://www.yapo.cl/region_metropolitana/departamentos/arriendo?o=${i+1}`
+);
+
 // Función para simular delay
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Función para hacer delay entre requests
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // Datos dummy para simular avisos
 const dummyListings = [
@@ -111,11 +121,18 @@ async function main() {
     console.log('Iniciando scraping...');
 
     // Simular scraping de cada URL
-    for (const [source, sourceUrls] of Object.entries(urls)) {
-      for (const url of sourceUrls) {
-        console.log(`Scraping ${url}...`);
-        await sleep(1000); // Simular delay
-      }
+    for (const url of urlsPI) {
+      await delay(800); // Delay de 800ms entre requests
+      const response = await fetch(url);
+      console.log(`Scraping ${url}...`);
+      await sleep(1000); // Simular delay
+    }
+
+    for (const url of urlsYapo) {
+      await delay(800); // Delay de 800ms entre requests
+      const response = await fetch(url);
+      console.log(`Scraping ${url}...`);
+      await sleep(1000); // Simular delay
     }
 
     // Procesar listings
