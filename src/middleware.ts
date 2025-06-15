@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/admin') &&
-      request.nextUrl.searchParams.get('key') !== 'TU_PASS') {
+      request.nextUrl.searchParams.get('key') !== 'Detonador07!') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 }

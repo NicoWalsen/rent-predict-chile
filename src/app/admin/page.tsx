@@ -1,45 +1,42 @@
-'use client';
+"use client";
 
-import { PrismaClient } from '@prisma/client';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-const prisma = new PrismaClient();
+import { useEffect, useState } from "react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 interface PriceBucket {
   bucket: string;
   count: number;
 }
 
-export default async function AdminPage() {
-  const total = await prisma.listing.count();
-  const last = await prisma.scrapeLog.findFirst({ 
-    orderBy: { startedAt: 'desc' } 
-  });
-  
-  const data: PriceBucket[] = await prisma.$queryRaw`
-    SELECT 
-      CASE 
-        WHEN precio < 300000 THEN '0-300k'
-        WHEN precio < 500000 THEN '300k-500k'
-        WHEN precio < 700000 THEN '500k-700k'
-        WHEN precio < 1000000 THEN '700k-1M'
-        ELSE '1M+'
-      END as bucket,
-      COUNT(*) as count
-    FROM "Listing"
-    GROUP BY bucket
-    ORDER BY MIN(precio)
-  `;
+interface AdminData {
+  total: number;
+  last: string | null;
+  data: PriceBucket[];
+}
+
+export default function AdminPage() {
+  const [adminData, setAdminData] = useState<AdminData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin-data")
+      .then((res) => res.json())
+      .then((data) => {
+        setAdminData(data);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading || !adminData) return <div>Cargando...</div>;
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: '2rem' }}>
       <h1>Rent Widget – Admin</h1>
-      <p>Total listings: {total}</p>
-      <p>Último scrape: {last?.startedAt.toLocaleString()}</p>
-      
+      <p>Total listings: {adminData.total}</p>
+      <p>Último scrape: {adminData.last}</p>
       <div style={{ width: '100%', height: 300 }}>
         <ResponsiveContainer>
-          <BarChart data={data}>
+          <BarChart data={adminData.data}>
             <XAxis 
               dataKey="bucket" 
               label={{ value: 'Rango de Precio (CLP)', position: 'bottom' }}
@@ -54,4 +51,7 @@ export default async function AdminPage() {
       </div>
     </div>
   );
-} 
+}
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; 

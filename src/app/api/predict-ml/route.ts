@@ -1,38 +1,71 @@
-import { readFileSync } from 'fs';
 import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
-export const runtime = 'nodejs';
+const prisma = new PrismaClient();
 
-// Cargar modelo
-const model = JSON.parse(readFileSync('public/model.json', 'utf-8'));
+export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request) {
+export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const comuna = searchParams.get('comuna')?.toLowerCase();
+    const { searchParams } = new URL(request.url);
+    const comuna = searchParams.get('comuna');
     const m2 = Number(searchParams.get('m2'));
 
     if (!comuna || !m2) {
-      return NextResponse.json({ error: 'Parámetros inválidos' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Comuna y metros cuadrados son requeridos' },
+        { status: 400 }
+      );
     }
 
-    // Filtrar datos por comuna y m2 similar
-    const similarListings = model.data.filter((l: any) => 
-      l.comuna.toLowerCase() === comuna &&
-      Math.abs(l.m2 - m2) <= 10
-    );
+    // Obtener datos de la base de datos
+    const listings = await prisma.listing.findMany({
+      where: {
+        comuna: {
+          equals: comuna,
+          mode: 'insensitive'
+        }
+      },
+      select: {
+        precio: true,
+        m2: true
+      }
+    });
 
-    if (similarListings.length === 0) {
-      return NextResponse.json({ error: 'No hay datos suficientes' }, { status: 404 });
+    if (listings.length === 0) {
+      return NextResponse.json(
+        { error: 'No se encontraron propiedades en la comuna especificada' },
+        { status: 404 }
+      );
     }
 
-    // Calcular precio promedio
-    const prices = similarListings.map((l: any) => l.precio);
-    const predicted = Math.round(prices.reduce((a: number, b: number) => a + b, 0) / prices.length);
+    // Calcular predicción
+    const rents = listings.map(listing => Math.round((listing.precio / listing.m2) * m2));
+    rents.sort((a, b) => a - b);
 
-    return NextResponse.json({ predicted });
+    const p = (q: number) => rents[Math.floor((rents.length - 1) * q)];
+    const p25 = p(0.25);
+    const p50 = p(0.50);
+    const p75 = p(0.75);
+
+    return NextResponse.json({
+      precioEstimado: p50,
+      rangoPrecios: {
+        min: rents[0],
+        max: rents[rents.length - 1]
+      },
+      percentiles: {
+        p25,
+        p50,
+        p75
+      },
+      count: rents.length
+    });
   } catch (error) {
     console.error('Error en predict-ml:', error);
-    return NextResponse.json({ error: 'Error interno' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Error al procesar la solicitud' },
+      { status: 500 }
+    );
   }
 } 
