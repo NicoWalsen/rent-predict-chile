@@ -11,7 +11,8 @@
     "seed": "node scripts/seed.js",
     "test-prisma": "node scripts/test-prisma.js",
     "prisma:generate": "prisma generate",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "train:ml": "python scripts/train.py"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
@@ -31,6 +32,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.29",
     "postcss": "^8",
+    "python-shell": "^5.0.0",
     "typescript": "^5"
   }
 }

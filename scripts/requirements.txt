@@ -1,0 +1,4 @@
+scikit-learn
+pandas
+joblib
+psycopg2-binary 
