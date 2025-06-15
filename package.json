@@ -12,7 +12,8 @@
     "test-prisma": "node scripts/test-prisma.js",
     "prisma:generate": "prisma generate",
     "postinstall": "prisma generate",
-    "train:ml": "python scripts/train.py"
+    "train:ml": "python scripts/train.py",
+    "verify:prod": "node scripts/verify-prod.js"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
