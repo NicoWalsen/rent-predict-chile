@@ -10,6 +10,7 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            line-height: 1.6;
         }
         h1 {
             color: #333;
@@ -26,6 +27,17 @@
             border-radius: 4px;
             overflow-x: auto;
         }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -38,6 +50,21 @@
                 data-m2="60"
                 data-bedrooms="2"
                 data-bathrooms="1"></script>
+    </div>
+
+    <div class="features">
+        <div class="feature">
+            <h3>📊 Rango de Precios</h3>
+            <p>Muestra el rango de precios basado en avisos similares en la misma comuna.</p>
+        </div>
+        <div class="feature">
+            <h3>🤖 Predicción IA</h3>
+            <p>Utiliza machine learning para predecir el precio esperado del arriendo.</p>
+        </div>
+        <div class="feature">
+            <h3>🎯 Precisión</h3>
+            <p>Indica visualmente si la predicción está dentro del rango esperado.</p>
+        </div>
     </div>
 
     <div class="example">
