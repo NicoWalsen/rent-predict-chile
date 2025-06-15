@@ -1,18 +1,19 @@
 name: weekly-scrape
 on:
-  schedule: [cron: '0 5 * * 0']   # domingo 05:00 CLT
-  workflow_dispatch:  # permite ejecución manual
+  schedule:
+    - cron: '0 5 * * 0'   # domingo 05:00 CLT
+  workflow_dispatch:      # permite ejecución manual
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: 
+        with:
           node-version: 'lts/*'
       - run: npm ci
-      - run: npm run scrape
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }} 
+      - run: npm run scrape 
