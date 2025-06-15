@@ -1,122 +1,133 @@
-export const runtime = 'nodejs';
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { PrismaClient } from '@prisma/client';
 
-interface Property {
-  id: number;
-  comuna: string;
-  m2: number;
-  precio: number;
-  createdAt: string;
-  updatedAt: string;
+const prisma = new PrismaClient();
+
+// Helper para formatear CLP
+const clp = (n: number) => 'CLP ' + n.toLocaleString('es-CL');
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { comuna, m2 } = body;
+
+    if (!comuna || !m2) {
+      return NextResponse.json(
+        { error: 'Comuna y metros cuadrados son requeridos' },
+        { status: 400 }
+      );
+    }
+
+    // Obtener todos los datos de la tabla listing
+    const listings = await prisma.listing.findMany({
+      where: {
+        comuna: {
+          equals: comuna,
+          mode: 'insensitive'
+        }
+      },
+      select: {
+        precio: true,
+        m2: true
+      }
+    });
+
+    if (listings.length === 0) {
+      return NextResponse.json(
+        { error: 'No se encontraron propiedades en la comuna especificada' },
+        { status: 404 }
+      );
+    }
+
+    // Calcular los arriendos estimados para el m2 solicitado
+    const rents = listings.map((listing: { precio: number; m2: number }) => Math.round((listing.precio / listing.m2) * m2));
+    rents.sort((a: number, b: number) => a - b);
+    const p = (q: number) => rents[Math.floor((rents.length - 1) * q)];
+    const p25 = p(0.25);
+    const p50 = p(0.50);
+    const p75 = p(0.75);
+    const min = rents[0];
+    const max = rents[rents.length - 1];
+    const avg = Math.round(rents.reduce((s: number, r: number) => s + r, 0) / rents.length);
+
+    return NextResponse.json({
+      min, max, avg, p25, p50, p75,
+      minFmt: clp(min),
+      maxFmt: clp(max),
+      avgFmt: clp(avg),
+      p25Fmt: clp(p25),
+      p50Fmt: clp(p50),
+      p75Fmt: clp(p75),
+      count: rents.length,
+      comuna,
+      m2
+    });
+  } catch (error) {
+    console.error('Error en la predicción:', error);
+    return NextResponse.json(
+      { error: 'Error al procesar la solicitud' },
+      { status: 500 }
+    );
+  }
 }
 
-interface Model {
-  version: string;
-  type: string;
-  data: Property[];
-}
-
-// Cargar datos del modelo
-let model: Model;
-try {
-  const modelPath = path.join(process.cwd(), 'public', 'model.json');
-  const modelData = fs.readFileSync(modelPath, 'utf-8');
-  model = JSON.parse(modelData);
-  console.log('Modelo cargado correctamente:', model.data.length, 'propiedades');
-} catch (error) {
-  console.error('Error al cargar el modelo:', error);
-  model = { version: '1.0.0', type: 'percentile', data: [] };
-}
-
+// GET para compatibilidad con curl de vercel
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const comuna = searchParams.get('comuna')?.toLowerCase();
-    const m2 = parseInt(searchParams.get('m2') || '0');
-
-    if (!comuna || isNaN(m2) || m2 <= 0) {
-      return NextResponse.json({ error: 'Parámetros inválidos' }, { status: 400 });
+    const comuna = searchParams.get('comuna');
+    const m2 = Number(searchParams.get('m2'));
+    if (!comuna || !m2) {
+      return NextResponse.json(
+        { error: 'Comuna y metros cuadrados son requeridos' },
+        { status: 400 }
+      );
     }
-
-    // Primero buscar coincidencia exacta
-    const exactMatch = model.data.find(
-      (l) => l.comuna.toLowerCase() === comuna && l.m2 === m2
-    );
-
-    if (exactMatch) {
-      return NextResponse.json({
-        min: exactMatch.precio,
-        max: exactMatch.precio,
-        avg: exactMatch.precio,
-        count: 1,
-        sample: [exactMatch],
-        isExactMatch: true,
-        debug: {
-          comuna,
-          m2,
-          totalProperties: model.data.length
+    // Obtener todos los datos de la tabla listing
+    const listings = await prisma.listing.findMany({
+      where: {
+        comuna: {
+          equals: comuna,
+          mode: 'insensitive'
         }
-      }, { status: 200 });
-    }
-
-    // Si no hay coincidencia exacta, buscar propiedades similares
-    const listings = model.data
-      .filter((l) => 
-        l.comuna.toLowerCase() === comuna &&
-        Math.abs(l.m2 - m2) <= 5 // Solo propiedades con diferencia de hasta 5m²
-      )
-      .sort((a, b) => Math.abs(a.m2 - m2) - Math.abs(b.m2 - m2));
-
-    // Si hay menos de 3 resultados, buscar con margen más amplio
-    if (listings.length < 3) {
-      const widerListings = model.data
-        .filter((l) => 
-          l.comuna.toLowerCase() === comuna &&
-          Math.abs(l.m2 - m2) <= 10 // Ampliar a diferencia de hasta 10m²
-        )
-        .sort((a, b) => Math.abs(a.m2 - m2) - Math.abs(b.m2 - m2));
-      
-      listings.push(...widerListings.filter(l => !listings.some(existing => existing.id === l.id)));
-    }
-
-    if (listings.length === 0) {
-      return NextResponse.json({ 
-        error: 'No hay datos suficientes',
-        debug: {
-          comuna,
-          m2,
-          totalProperties: model.data.length,
-          propertiesInComuna: model.data.filter((l) => l.comuna.toLowerCase() === comuna).length
-        }
-      }, { status: 404 });
-    }
-
-    const rents = listings.map((l) => l.precio);
-    const min = Math.min(...rents);
-    const max = Math.max(...rents);
-    const avg = Math.round(rents.reduce((a, b) => a + b, 0) / rents.length);
-
-    return NextResponse.json({ 
-      min, 
-      max, 
-      avg,
-      count: listings.length, 
-      sample: listings,
-      isExactMatch: false,
-      debug: {
-        comuna,
-        m2,
-        totalProperties: model.data.length,
-        closestM2: listings[0].m2
+      },
+      select: {
+        precio: true,
+        m2: true
       }
-    }, { status: 200 });
+    });
+    if (listings.length === 0) {
+      return NextResponse.json(
+        { error: 'No se encontraron propiedades en la comuna especificada' },
+        { status: 404 }
+      );
+    }
+    const rents = listings.map((listing: { precio: number; m2: number }) => Math.round((listing.precio / listing.m2) * m2));
+    rents.sort((a: number, b: number) => a - b);
+    const p = (q: number) => rents[Math.floor((rents.length - 1) * q)];
+    const p25 = p(0.25);
+    const p50 = p(0.50);
+    const p75 = p(0.75);
+    const min = rents[0];
+    const max = rents[rents.length - 1];
+    const avg = Math.round(rents.reduce((s: number, r: number) => s + r, 0) / rents.length);
+    return NextResponse.json({
+      min, max, avg, p25, p50, p75,
+      minFmt: clp(min),
+      maxFmt: clp(max),
+      avgFmt: clp(avg),
+      p25Fmt: clp(p25),
+      p50Fmt: clp(p50),
+      p75Fmt: clp(p75),
+      count: rents.length,
+      comuna,
+      m2
+    });
   } catch (error) {
-    console.error('Error en el endpoint /api/predict:', error);
-    return NextResponse.json({ 
-      error: 'Error interno del servidor',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    console.error('Error en la predicción:', error);
+    return NextResponse.json(
+      { error: 'Error al procesar la solicitud' },
+      { status: 500 }
+    );
   }
 } 
