@@ -17,13 +17,13 @@ export async function GET(request: Request) {
 
   const listings = await prisma.listing.findMany({
     where: {
-      commune: { contains: comuna, mode: 'insensitive' },
-      areaM2: {
+      comuna: { contains: comuna, mode: 'insensitive' },
+      m2: {
         gte: m2 - 10,
         lte: m2 + 10
       }
     },
-    orderBy: { rentCLP: 'asc' },
+    orderBy: { precio: 'asc' },
     take: 5
   });
 
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'No found' }, { status: 404 });
   }
 
-  const rents = listings.map((l: { rentCLP: number }) => l.rentCLP);
+  const rents = listings.map((l: { precio: number }) => l.precio);
   const min = Math.min(...rents);
   const max = Math.max(...rents);
 

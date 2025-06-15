@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,28 +11,12 @@ datasource db {
 }
 
 model Listing {
-  id          Int      @id @default(autoincrement())
-  externalId  String   @unique
-  source      Source
-  publishedAt DateTime
-  lat         Float
-  lon         Float
-  commune     String
-  areaM2      Int
-  bedrooms    Int
-  bathrooms   Int
-  rentCLP     Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  id        Int      @id @default(autoincrement())
+  comuna    String
+  m2        Int
+  precio    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("Listing")
-  @@schema("public")
-  @@allow("read", true)
-  @@deny("write", true)
-  @@allow("write", auth() != null)
-}
-
-enum Source {
-  PORTALINMOBILIARIO
-  YAPO
 }
