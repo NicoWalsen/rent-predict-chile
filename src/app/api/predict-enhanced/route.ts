@@ -81,16 +81,18 @@ export async function POST(request: Request) {
       min: prediction.mainRange.min,
       max: prediction.mainRange.max,
       avg: prediction.predicted,
-      predicted: prediction.predicted,
+      predicted_price: prediction.predicted,
       median: prediction.median,
       mostLikely: prediction.mostLikely,
       
       // Percentiles completos
-      p10: prediction.percentiles.p10,
-      p25: prediction.percentiles.p25,
-      p50: prediction.percentiles.p50,
-      p75: prediction.percentiles.p75,
-      p90: prediction.percentiles.p90,
+      percentiles: {
+        p10: prediction.percentiles.p10,
+        p25: prediction.percentiles.p25,
+        p50: prediction.percentiles.p50,
+        p75: prediction.percentiles.p75,
+        p90: prediction.percentiles.p90
+      },
       
       // Versiones formateadas
       minFmt: clp(prediction.mainRange.min),
@@ -130,9 +132,9 @@ export async function POST(request: Request) {
       bodega: targetProperty.bodega,
       
       // Métricas de calidad mejoradas
-      count: prediction.dataQuality.sampleSize,
+      sample_size: prediction.dataQuality.sampleSize,
       confidence: prediction.confidence,
-      marketCondition: prediction.marketCondition,
+      market_condition: prediction.marketCondition,
       
       // Información de calidad de datos
       dataQuality: {
@@ -285,15 +287,17 @@ export async function GET(request: Request) {
       min: prediction.mainRange.min,
       max: prediction.mainRange.max,
       avg: prediction.predicted,
-      predicted: prediction.predicted,
+      predicted_price: prediction.predicted,
       median: prediction.median,
       mostLikely: prediction.mostLikely,
       
-      p10: prediction.percentiles.p10,
-      p25: prediction.percentiles.p25,
-      p50: prediction.percentiles.p50,
-      p75: prediction.percentiles.p75,
-      p90: prediction.percentiles.p90,
+      percentiles: {
+        p10: prediction.percentiles.p10,
+        p25: prediction.percentiles.p25,
+        p50: prediction.percentiles.p50,
+        p75: prediction.percentiles.p75,
+        p90: prediction.percentiles.p90
+      },
       
       minFmt: clp(prediction.mainRange.min),
       maxFmt: clp(prediction.mainRange.max),
@@ -315,9 +319,9 @@ export async function GET(request: Request) {
       estacionamientos: targetProperty.estacionamientos,
       bodega: targetProperty.bodega,
       
-      count: prediction.dataQuality.sampleSize,
+      sample_size: prediction.dataQuality.sampleSize,
       confidence: prediction.confidence,
-      marketCondition: prediction.marketCondition,
+      market_condition: prediction.marketCondition,
       
       dataQuality: {
         sampleSize: prediction.dataQuality.sampleSize,
