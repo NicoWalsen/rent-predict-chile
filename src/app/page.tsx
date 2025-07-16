@@ -11,7 +11,19 @@ export default function App() {
   const [comunas, setComunas] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingComunas, setLoadingComunas] = useState(true);
-  const [resultado, setResultado] = useState<Record<string, unknown> | null>(null);
+  const [resultado, setResultado] = useState<{
+    predicted_price?: number;
+    sample_size?: number;
+    confidence?: number;
+    percentiles?: {
+      p10?: number;
+      p25?: number;
+      p50?: number;
+      p75?: number;
+      p90?: number;
+    };
+    market_condition?: string;
+  } | null>(null);
 
   // Cargar comunas al iniciar
   useEffect(() => {
@@ -412,11 +424,11 @@ export default function App() {
                       {/* Confianza del modelo */}
                       <div className="mt-3 flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4">
                         <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          resultado.confidence >= 80 ? 'bg-green-100 text-green-800' :
-                          resultado.confidence >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                          (resultado.confidence ?? 0) >= 80 ? 'bg-green-100 text-green-800' :
+                          (resultado.confidence ?? 0) >= 60 ? 'bg-yellow-100 text-yellow-800' :
                           'bg-red-100 text-red-800'
                         }`}>
-                          {resultado.confidence}% Confianza
+                          {resultado.confidence ?? 0}% Confianza
                         </div>
                         <div className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
                           ML Similarity v2.0

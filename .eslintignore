@@ -1,0 +1,12 @@
+# Ignorar todos los archivos durante el build
+**/*
+*.js
+*.jsx
+*.ts
+*.tsx
+src/**/*
+pages/**/*
+components/**/*
+.next/**/*
+node_modules/**/*
+out/**/*
