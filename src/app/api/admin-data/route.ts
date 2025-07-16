@@ -3,6 +3,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+// Configuración para evitar el prerenderizado
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const total = await prisma.listing.count();
   const last = await prisma.scrapeLog.findFirst({ 
@@ -17,7 +21,7 @@ export async function GET() {
       ELSE '1M+'
     END as bucket,
     COUNT(*) as count
-    FROM "Listing"
+    FROM Listing
     GROUP BY bucket
     ORDER BY MIN(precio)`;
 

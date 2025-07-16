@@ -78,35 +78,118 @@ export default function App() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Unified Responsive Layout */}
       <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-6 max-w-7xl">
-        {/* Professional Header */}
-        <header className="bg-white shadow-sm border border-gray-200 rounded-2xl mb-6 lg:mb-8 p-4 lg:p-6">
-          <div className="flex flex-col lg:flex-row items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div className="flex items-center space-x-4 lg:space-x-6">
-              <div className="flex items-center space-x-3 lg:space-x-4">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl flex items-center justify-center shadow-lg">
-                  <svg className="w-6 h-6 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
+        {/* Premium Professional Header */}
+        <header className="relative bg-gradient-to-r from-slate-50 via-white to-slate-50 shadow-2xl border border-gray-200/50 rounded-3xl mb-6 lg:mb-8 p-6 lg:p-8 overflow-hidden">
+          {/* Decorative Background Elements */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-indigo-50/20 to-purple-50/30 pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-100/20 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-purple-100/20 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+          
+          <div className="relative z-10">
+            <div className="flex flex-col lg:flex-row items-center lg:justify-between space-y-6 lg:space-y-0">
+              <div className="flex items-center space-x-4 lg:space-x-6">
+                <div className="flex items-center space-x-4 lg:space-x-5">
+                  {/* Enhanced Logo */}
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl blur-sm opacity-75 animate-pulse"></div>
+                    <div className="relative w-14 h-14 lg:w-20 lg:h-20 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white/30 backdrop-blur-sm">
+                      <svg className="w-7 h-7 lg:w-11 lg:h-11 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v10zm0 0h18M8 3v4m8-4v4M8 21v-4m8 4v-4" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  {/* Enhanced Branding */}
+                  <div className="text-left">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h1 className="text-2xl lg:text-4xl font-black bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent tracking-tight">
+                        RentPredict
+                      </h1>
+                      <div className="px-2 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs lg:text-sm font-bold rounded-lg shadow-md">
+                        CHILE
+                      </div>
+                    </div>
+                    <p className="text-sm lg:text-lg text-gray-700 font-semibold tracking-wide">
+                      Predicción Inteligente de Arriendos
+                    </p>
+                    <p className="text-xs lg:text-sm text-gray-500 mt-1 font-medium">
+                      Tecnología avanzada • Resultados confiables
+                    </p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <h1 className="text-xl lg:text-2xl font-bold text-gray-900 tracking-tight">
-                    RentPredict Chile
-                  </h1>
-                  <p className="text-sm lg:text-base text-gray-600 mt-1">
-                    Predicción de arriendos con IA
-                  </p>
+              </div>
+              
+              {/* Enhanced Trust Badges */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-end gap-2 lg:gap-3">
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                  <div className="relative px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-800 rounded-full text-xs lg:text-sm font-bold border-2 border-emerald-200/50 shadow-lg backdrop-blur-sm">
+                    <div className="flex items-center space-x-1">
+                      <svg className="w-3 h-3 lg:w-4 lg:h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                      </svg>
+                      <span>SEGURO SSL</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                  <div className="relative px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 rounded-full text-xs lg:text-sm font-bold border-2 border-blue-200/50 shadow-lg backdrop-blur-sm">
+                    <div className="flex items-center space-x-1">
+                      <svg className="w-3 h-3 lg:w-4 lg:h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>IA AVANZADA</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                  <div className="relative px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-800 rounded-full text-xs lg:text-sm font-bold border-2 border-purple-200/50 shadow-lg backdrop-blur-sm">
+                    <div className="flex items-center space-x-1">
+                      <svg className="w-3 h-3 lg:w-4 lg:h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                      </svg>
+                      <span>TIEMPO REAL</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                  <div className="relative px-4 py-2 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-800 rounded-full text-xs lg:text-sm font-bold border-2 border-amber-200/50 shadow-lg backdrop-blur-sm">
+                    <div className="flex items-center space-x-1">
+                      <svg className="w-3 h-3 lg:w-4 lg:h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <span>PREMIUM</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2 lg:space-x-3">
-              <div className="px-3 py-1 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 rounded-full text-xs lg:text-sm font-medium border border-emerald-200">
-                🔒 Seguro
-              </div>
-              <div className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 rounded-full text-xs lg:text-sm font-medium border border-blue-200">
-                🤖 ML v2.0
-              </div>
-              <div className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 rounded-full text-xs lg:text-sm font-medium border border-purple-200">
-                ⚡ Tiempo real
+            
+            {/* Trust Indicator Line */}
+            <div className="mt-6 lg:mt-8 pt-4 border-t border-gray-200/50">
+              <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 text-xs lg:text-sm text-gray-600">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="font-medium">12,108+ propiedades analizadas</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="font-medium">5 fuentes de datos</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="font-semibold text-green-700">Verificado y confiable</span>
+                </div>
               </div>
             </div>
           </div>
@@ -116,18 +199,30 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Left Column - Form */}
           <div className="lg:col-span-5">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8 animate-fade-in">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <svg className="w-6 h-6 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 6v6m6-6v6m-6 0H4a2 2 0 01-2-2v-2M18 19a2 2 0 01-2 2v-2a2 2 0 012-2z" />
-                </svg>
-                Datos de la Propiedad
-              </h2>
+            <div className="relative bg-gradient-to-br from-white via-slate-50/50 to-white rounded-3xl shadow-xl border border-gray-200/60 p-6 lg:p-8 animate-fade-in overflow-hidden">
+              {/* Decorative Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/20 via-blue-50/10 to-purple-50/20 pointer-events-none"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-100/30 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-2xl lg:text-3xl font-black text-gray-900 mb-6 flex items-center">
+                  <div className="relative mr-4">
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-sm opacity-20"></div>
+                    <div className="relative w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">
+                    Datos de la Propiedad
+                  </span>
+                </h2>
               
               <div className="space-y-6">
                 {/* Comuna */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Comuna</label>
+                  <label className="block text-sm font-semibold text-gray-800 mb-3">Comuna</label>
                   {loadingComunas ? (
                     <div className="animate-pulse bg-gray-200 rounded-lg h-11"></div>
                   ) : (
@@ -135,14 +230,14 @@ export default function App() {
                       <select
                         value={comuna}
                         onChange={(e) => setComuna(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 shadow-sm transition-colors"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 shadow-sm transition-colors appearance-none pr-10"
                       >
                         <option value="">Selecciona una comuna</option>
                         {comunas.map((c) => (
                           <option key={c} value={c}>{c}</option>
                         ))}
                       </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
@@ -153,7 +248,7 @@ export default function App() {
 
                 {/* Metros Cuadrados */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Metros Cuadrados</label>
+                  <label className="block text-sm font-semibold text-gray-800 mb-3">Metros Cuadrados</label>
                   <div className="relative">
                     <input
                       type="number"
@@ -172,7 +267,7 @@ export default function App() {
 
                 {/* Tipo de Propiedad */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Propiedad</label>
+                  <label className="block text-sm font-semibold text-gray-800 mb-3">Tipo de Propiedad</label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
@@ -201,11 +296,11 @@ export default function App() {
 
                 {/* Dormitorios */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Dormitorios</label>
+                  <label className="block text-sm font-semibold text-gray-800 mb-3">Dormitorios</label>
                   <select
                     value={dormitorios}
                     onChange={(e) => setDormitorios(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 shadow-sm transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 shadow-sm transition-colors appearance-none"
                   >
                     <option value="1">1 Dormitorio</option>
                     <option value="2">2 Dormitorios</option>
@@ -218,7 +313,7 @@ export default function App() {
                 {/* Características Adicionales */}
                 <div className="grid grid-cols-1 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Estacionamientos</label>
+                    <label className="block text-sm font-semibold text-gray-800 mb-3">Estacionamientos</label>
                     <div className="flex space-x-3">
                       {[0, 1, 2, 3].map((num) => (
                         <button
@@ -245,7 +340,7 @@ export default function App() {
                         onChange={(e) => setBodega(e.target.checked)}
                         className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                       />
-                      <span className="text-sm font-medium text-gray-700">Bodega incluida</span>
+                      <span className="text-sm font-semibold text-gray-800">Bodega incluida</span>
                     </label>
                   </div>
                 </div>
@@ -254,10 +349,10 @@ export default function App() {
                 <button
                   onClick={handlePrediction}
                   disabled={loading || !comuna || !m2}
-                  className={`w-full py-4 px-6 rounded-xl font-medium text-white transition-all duration-200 transform shadow-lg ${
+                  className={`w-full py-4 px-6 rounded-2xl font-bold text-white transition-all duration-300 transform shadow-xl ${
                     loading || !comuna || !m2
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-105 active:scale-95'
+                      : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-700 hover:via-purple-700 hover:to-indigo-700 hover:scale-105 active:scale-95 shadow-indigo-500/25'
                   }`}
                 >
                   {loading ? (
@@ -275,18 +370,31 @@ export default function App() {
                   )}
                 </button>
               </div>
+              </div>
             </div>
           </div>
 
           {/* Right Column - Results */}
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8 animate-fade-in">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <svg className="w-6 h-6 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                Resultados de la Predicción
-              </h2>
+            <div className="relative bg-gradient-to-br from-white via-slate-50/50 to-white rounded-3xl shadow-xl border border-gray-200/60 p-6 lg:p-8 animate-fade-in overflow-hidden">
+              {/* Decorative Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/20 via-green-50/10 to-teal-50/20 pointer-events-none"></div>
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-emerald-100/30 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-2xl lg:text-3xl font-black text-gray-900 mb-6 flex items-center">
+                  <div className="relative mr-4">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl blur-sm opacity-20"></div>
+                    <div className="relative w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
+                    Resultados de la Predicción
+                  </span>
+                </h2>
               
               <div className="h-full min-h-[400px] lg:min-h-[500px]">
                 {resultado ? (
@@ -389,6 +497,7 @@ export default function App() {
                     </div>
                   </div>
                 )}
+              </div>
               </div>
             </div>
           </div>

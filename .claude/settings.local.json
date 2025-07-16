@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run check:env:*)",
+      "Bash(del package-lock.json)",
+      "Bash(ls:*)",
+      "Bash(npm run test-prisma:*)",
+      "Bash(npm run dev:*)",
+      "Bash(ping:*)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(copy .env.local .env)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(npm run seed:*)",
+      "Bash(curl:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run build:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx next:*)",
+      "Bash(npm run scrape:*)",
+      "Bash(node:*)",
+      "Bash(pkill:*)",
+      "Bash(npx create-expo-app:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx expo install:*)",
+      "Bash(npx expo:*)",
+      "Bash(start http://localhost:8081)",
+      "Bash(mv:*)",
+      "Bash(move libsecurity.ts srclibsecurity.ts)",
+      "Bash(copy lib/security.ts src/lib/security.ts)",
+      "Bash(powershell:*)",
+      "Bash(grep:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm run:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

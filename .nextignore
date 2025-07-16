@@ -1,0 +1,4 @@
+rent-predictor-app/
+rent-predictor-app/**
+scripts/train.py
+*.py

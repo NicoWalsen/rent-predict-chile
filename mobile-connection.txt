@@ -1,0 +1,32 @@
+📱 CONEXIÓN MÓVIL - Rent Predictor Chile (ACTUALIZADO)
+
+🔥 NUEVOS CAMPOS AGREGADOS:
+✅ Tipo de Propiedad (Casa/Departamento)
+✅ Dormitorios (1-15)
+✅ API actualizada con nuevos algoritmos
+
+🌐 URLs ACTUALIZADAS:
+Opción 1: URL directa
+exp://192.168.100.145:8083
+
+Opción 2: URL web directa  
+http://192.168.100.145:8083
+
+Opción 3: Si usas localhost
+exp://127.0.0.1:8083
+
+⚡ SERVIDOR BACKEND:
+http://192.168.100.145:3006/api/predict
+
+INSTRUCCIONES:
+1. Asegúrate que PC y móvil estén en mismo WiFi
+2. Abre Expo Go en tu móvil
+3. Toca "Enter URL manually" 
+4. Pega la URL exp://192.168.100.145:8083
+5. ¡La app se abrirá con NUEVAS características!
+
+🎯 NUEVAS FUNCIONES:
+- Selección tipo propiedad
+- Input dormitorios (1-15)
+- Estimaciones más precisas
+- Iconos profesionales modernos

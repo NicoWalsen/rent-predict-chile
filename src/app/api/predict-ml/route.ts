@@ -23,7 +23,6 @@ export async function GET(request: Request) {
       where: {
         comuna: {
           equals: comuna,
-          mode: 'insensitive'
         }
       },
       select: {

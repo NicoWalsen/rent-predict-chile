@@ -1,0 +1,38 @@
+// Test del nuevo modelo de predicción
+console.log('🧪 PRUEBA DEL NUEVO MODELO DE PREDICCIÓN\n');
+
+console.log('Para verificar que el nuevo modelo funciona correctamente:');
+console.log('');
+console.log('1. 🔄 REINICIA EL SERVIDOR:');
+console.log('   - Detén el servidor actual (Ctrl+C)');
+console.log('   - Ejecuta: npm run dev:https');
+console.log('   - Espera a que aparezca "Ready"');
+console.log('');
+console.log('2. 🧪 PRUEBA ESTAS COMBINACIONES:');
+console.log('');
+console.log('   📍 Las Condes, 60m²:');
+console.log('   • Casa, 3 dormitorios     → Esperado: ~CLP 1,100,000');
+console.log('   • Departamento, 2 dormitorios → Esperado: ~CLP 650,000');
+console.log('   • Diferencia esperada: ~69% más cara la casa');
+console.log('');
+console.log('   📍 Providencia, 50m²:');
+console.log('   • Casa, 2 dormitorios     → Esperado: ~CLP 900,000');
+console.log('   • Departamento, 1 dormitorio → Esperado: ~CLP 550,000');
+console.log('   • Diferencia esperada: ~64% más cara la casa');
+console.log('');
+console.log('3. 📊 REVISA LOS LOGS:');
+console.log('   En la terminal del servidor deberías ver:');
+console.log('   ✅ "🎯 Buscando propiedades: casa, 3 dormitorios en Las Condes"');
+console.log('   ✅ "📊 Propiedades del tipo casa: XXX"');
+console.log('   ✅ "🛏️ Con 3±1 dormitorios: XXX"');
+console.log('   ✅ "🔧 Ajuste fino: ..." (si hay ajustes)');
+console.log('');
+console.log('4. ⚠️ SI NO HAY DIFERENCIA:');
+console.log('   - Verifica que los logs muestren el filtrado correcto');
+console.log('   - Confirma que el servidor se reinició completamente');
+console.log('   - Revisa la consola del navegador por errores');
+console.log('');
+console.log('='.repeat(60));
+console.log('🎯 RESULTADO ESPERADO:');
+console.log('Las predicciones ahora deberían mostrar diferencias SIGNIFICATIVAS');
+console.log('entre casas/departamentos y diferentes números de dormitorios.');

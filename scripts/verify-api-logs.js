@@ -1,0 +1,30 @@
+// Script para verificar que la API está recibiendo tipoPropiedad correctamente
+console.log('🔍 Verificación de logs de API\n');
+
+console.log('Para verificar que el tipo de propiedad está funcionando:');
+console.log('');
+console.log('1. 📋 VERIFICA EN LOS LOGS DEL SERVIDOR:');
+console.log('   - En la terminal donde corre `npm run dev:https`');
+console.log('   - Busca líneas como: "📝 Parámetros validados: {...}"');
+console.log('   - Debe mostrar: tipoPropiedad: "casa" o "departamento"');
+console.log('');
+console.log('2. 🧪 PRUEBA MANUAL:');
+console.log('   - Ve a https://localhost:3008');
+console.log('   - Selecciona Las Condes, 60m²');
+console.log('   - Cambia entre "Casa" y "Departamento"');
+console.log('   - Haz clic en "Generar Estimación" cada vez');
+console.log('   - Compara los resultados');
+console.log('');
+console.log('3. 🔍 SI NO VES DIFERENCIA:');
+console.log('   - Verifica que el parámetro tipoPropiedad aparece en logs');
+console.log('   - Confirma que el algoritmo está aplicando factores');
+console.log('   - Revisa si hay errores en la consola del navegador');
+console.log('');
+console.log('4. 📊 DIFERENCIA ESPERADA (Las Condes 60m²):');
+console.log('   - Casa: ~CLP 950,000 - CLP 1,200,000');
+console.log('   - Departamento: ~CLP 650,000 - CLP 850,000');
+console.log('   - Diferencia: ~40-50% más cara la casa');
+console.log('');
+console.log('='.repeat(60));
+console.log('Si los valores son muy similares, hay un problema en el algoritmo.');
+console.log('Si no aparece tipoPropiedad en logs, hay problema en el frontend.');
