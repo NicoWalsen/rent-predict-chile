@@ -5,10 +5,7 @@ const nextConfig = {
   skipMiddlewareUrlNormalize: true,
   
   // Configurar ESLint para ser menos estricto en producción
-  eslint: {
-    ignoreDuringBuilds: true,
-    dirs: [],
-  },
+  eslint: false,
   
   // Configurar TypeScript para ser menos estricto
   typescript: {
