@@ -13,6 +13,151 @@ const clp = (n: number) => 'CLP ' + n.toLocaleString('es-CL');
 // Instancia del modelo mejorado
 const mlModel = new EnhancedRentPredictionModel();
 
+// Función helper para procesar la predicción
+async function processPredict(params: any, clientIP: string) {
+  // Validación de entrada
+  const validation = validateInput(params);
+  if (!validation.isValid) {
+    logSecurityEvent('INVALID_INPUT', { errors: validation.errors, input: params }, clientIP);
+    return NextResponse.json(
+      { 
+        error: 'Datos de entrada inválidos',
+        details: validation.errors
+      },
+      { status: 400 }
+    );
+  }
+  
+  const { comuna, m2, estacionamientos, bodega, tipoPropiedad, dormitorios } = validation.data;
+
+  if (!comuna || !m2) {
+    return NextResponse.json(
+      { error: 'Comuna y metros cuadrados son requeridos' },
+      { status: 400 }
+    );
+  }
+
+  // Procesar predicción...
+  const targetProperty = {
+    comuna,
+    m2: parseInt(m2.toString()),
+    tipoPropiedad,
+    dormitorios: parseInt(dormitorios.toString()),
+    estacionamientos: parseInt(estacionamientos.toString()),
+    bodega: bodega === 'true' || bodega === true
+  };
+
+  console.log('🎯 Predicción mejorada para:', targetProperty);
+  
+  // Obtener predicción del modelo mejorado
+  const prediction = await mlModel.predict(targetProperty);
+  
+  console.log('📊 Predicción completada:', {
+    predicted_price: prediction.predicted_price,
+    confidence: prediction.confidence,
+    sample_size: prediction.dataQuality.sampleSize,
+    market_condition: prediction.marketCondition
+  });
+
+  const responseData = {
+    predicted_price: Math.round(prediction.predicted_price),
+    predicted_price_fmt: clp(Math.round(prediction.predicted_price)),
+    
+    // Percentiles mejorados
+    percentiles: {
+      p10: Math.round(prediction.percentiles.p10),
+      p25: Math.round(prediction.percentiles.p25),
+      p50: Math.round(prediction.percentiles.p50),
+      p75: Math.round(prediction.percentiles.p75),
+      p90: Math.round(prediction.percentiles.p90)
+    },
+    
+    // Rango extendido
+    extendedRange: {
+      min: prediction.extendedRange.min,
+      max: prediction.extendedRange.max,
+      minFmt: clp(prediction.extendedRange.min),
+      maxFmt: clp(prediction.extendedRange.max)
+    },
+    
+    // Metadata de entrada
+    comuna,
+    m2: targetProperty.m2,
+    tipoPropiedad,
+    dormitorios: targetProperty.dormitorios,
+    estacionamientos: targetProperty.estacionamientos,
+    bodega: targetProperty.bodega,
+    
+    // Métricas de calidad mejoradas
+    sample_size: prediction.dataQuality.sampleSize,
+    confidence: prediction.confidence,
+    market_condition: prediction.marketCondition,
+    
+    // Información de calidad de datos
+    dataQuality: {
+      sampleSize: prediction.dataQuality.sampleSize,
+      originalListings: prediction.dataQuality.originalListings,
+      outliersRemoved: prediction.dataQuality.outliersRemoved,
+      avgSimilarity: Math.round(prediction.dataQuality.avgSimilarity * 100) / 100,
+      dispersion: Math.round(prediction.dataQuality.dispersion * 100) / 100,
+      dataFreshness: prediction.dataQuality.dataFreshness,
+      lastUpdated: new Date().toISOString().split('T')[0],
+      sources: 'multiple_enhanced',
+      modelVersion: '2.0',
+      algorithm: 'enhanced_ml_similarity'
+    }
+  };
+
+  return NextResponse.json(sanitizeOutput(responseData));
+}
+
+export async function GET(request: Request) {
+  const clientIP = getClientIP(request);
+  
+  try {
+    // Rate limiting
+    const rateLimitResult = rateLimit(60, 60 * 1000, `get_enhanced_${clientIP}`);
+    if (!rateLimitResult.allowed) {
+      logSecurityEvent('RATE_LIMIT_EXCEEDED', { method: 'GET', endpoint: 'predict-enhanced' }, clientIP);
+      return NextResponse.json(
+        { 
+          error: 'Demasiadas solicitudes. Intenta nuevamente en un minuto.',
+          retryAfter: Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)
+        },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': '60',
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString()
+          }
+        }
+      );
+    }
+    
+    // Extraer parámetros de la URL
+    const { searchParams } = new URL(request.url);
+    const params = {
+      comuna: searchParams.get('comuna'),
+      m2: searchParams.get('m2'),
+      estacionamientos: searchParams.get('estacionamientos'),
+      bodega: searchParams.get('bodega'),
+      tipoPropiedad: searchParams.get('tipoPropiedad'),
+      dormitorios: searchParams.get('dormitorios')
+    };
+    
+    return await processPredict(params, clientIP);
+    
+  } catch (error) {
+    console.error('❌ Error en predicción mejorada (GET):', error);
+    logSecurityEvent('PREDICTION_ERROR', { error: error instanceof Error ? error.message : 'Unknown error' }, clientIP);
+    return NextResponse.json(
+      { error: `Error al predecir: ${error instanceof Error ? error.message : 'Error desconocido'}` },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: Request) {
   const clientIP = getClientIP(request);
   

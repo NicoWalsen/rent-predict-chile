@@ -78,9 +78,9 @@ export default function App() {
         dormitorios: dormitorios.toString()
       });
 
-      console.log('🌐 URL:', `/api/predict-enhanced?${params.toString()}`);
+      console.log('🌐 URL:', `/api/predict-simple?${params.toString()}`);
       
-      const response = await fetch(`/api/predict-enhanced?${params.toString()}`);
+      const response = await fetch(`/api/predict-simple?${params.toString()}`);
       
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
