@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { rateLimit, getClientIP, validateInput, sanitizeOutput, logSecurityEvent } from '../../../lib/security';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import { EnhancedRentPredictionModel } from '../../../../scripts/enhanced-ml-model.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const prisma = new PrismaClient();
-
-// Importar modelo ML mejorado
-const { EnhancedRentPredictionModel } = require('../../../../scripts/enhanced-ml-model.js');
 
 // Helper para formatear CLP
 const clp = (n: number) => 'CLP ' + n.toLocaleString('es-CL');

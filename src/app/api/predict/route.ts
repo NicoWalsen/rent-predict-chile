@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     
     // PASO 2: Si hay suficientes, filtrar también por dormitorios similares (±1)
     const dormitoriosNum = parseInt(dormitorios.toString());
-    let dormitoriosFiltrados = filteredListings.filter(l => 
+    const dormitoriosFiltrados = filteredListings.filter(l => 
       Math.abs(l.dormitorios - dormitoriosNum) <= 1
     );
     
@@ -156,7 +156,7 @@ export async function POST(request: Request) {
     const rents = filteredListings.map((listing: { precio: number; m2: number; tipoPropiedad: string; dormitorios: number; estacionamientos: number; bodega: boolean }) => {
       // Precio base por m2
       const pricePerM2 = listing.precio / listing.m2;
-      let basePrice = pricePerM2 * m2;
+      const basePrice = pricePerM2 * m2;
       
       // Ajustes finos por características específicas
       const estacionamientoDiff = estacionamientos - listing.estacionamientos;
@@ -343,7 +343,7 @@ export async function GET(request: Request) {
     
     // PASO 2: Si hay suficientes, filtrar también por dormitorios similares (±1)
     const dormitoriosNum = parseInt(dormitorios.toString());
-    let dormitoriosFiltrados = filteredListings.filter(l => 
+    const dormitoriosFiltrados = filteredListings.filter(l => 
       Math.abs(l.dormitorios - dormitoriosNum) <= 1
     );
     
@@ -393,7 +393,7 @@ export async function GET(request: Request) {
     const rents = filteredListings.map((listing: { precio: number; m2: number; tipoPropiedad: string; dormitorios: number; estacionamientos: number; bodega: boolean }) => {
       // Precio base por m2
       const pricePerM2 = listing.precio / listing.m2;
-      let basePrice = pricePerM2 * m2;
+      const basePrice = pricePerM2 * m2;
       
       // Ajustes finos por características específicas
       const estacionamientoDiff = estacionamientos - listing.estacionamientos;

@@ -11,7 +11,7 @@ export default function App() {
   const [comunas, setComunas] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingComunas, setLoadingComunas] = useState(true);
-  const [resultado, setResultado] = useState<any>(null);
+  const [resultado, setResultado] = useState<Record<string, unknown> | null>(null);
 
   // Cargar comunas al iniciar
   useEffect(() => {

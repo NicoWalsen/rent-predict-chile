@@ -36,7 +36,9 @@
       "Bash(taskkill:*)",
       "Bash(npm run:*)",
       "Bash(npx kill-port:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }

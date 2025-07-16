@@ -13,7 +13,7 @@ export async function GET() {
         'Ajustes finos por características'
       ]
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error en el servidor de test' },
       { status: 500 }
