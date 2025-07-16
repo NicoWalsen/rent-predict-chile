@@ -19,7 +19,9 @@
     "verify:prod": "node scripts/verify-prod.js",
     "check:env": "node scripts/check-env.js",
     "setup:prod": "node scripts/setup-prod.js",
-    "test:https": "node scripts/test-https.js"
+    "test:https": "node scripts/test-https.js",
+    "setup:supabase": "node scripts/setup-supabase.js",
+    "migrate:supabase": "node scripts/migrate-to-supabase.js"
   },
   "dependencies": {
     "@prisma/client": "^6.12.0",
