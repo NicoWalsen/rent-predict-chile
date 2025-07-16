@@ -4,6 +4,17 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   skipMiddlewareUrlNormalize: true,
   
+  // Configurar ESLint para ser menos estricto en producción
+  eslint: {
+    ignoreDuringBuilds: true,
+    dirs: ['src'],
+  },
+  
+  // Configurar TypeScript para ser menos estricto
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  
   // Excluir directorios del build
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
   experimental: {

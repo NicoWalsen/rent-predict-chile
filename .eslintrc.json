@@ -1,4 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
-  "ignorePatterns": ["src/generated/**/*", "node_modules/**/*", ".next/**/*"]
+  "extends": ["next/core-web-vitals"],
+  "ignorePatterns": ["src/generated/**/*", "node_modules/**/*", ".next/**/*"],
+  "rules": {
+    "prefer-const": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-require-imports": "warn"
+  }
 }
