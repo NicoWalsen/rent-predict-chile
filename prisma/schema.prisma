@@ -3,26 +3,41 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Listing {
-  id        Int      @id @default(autoincrement())
-  comuna    String
-  m2        Int
-  precio    Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  comuna           String
+  m2               Int
+  precio           Float
+  tipoPropiedad    String   @default("departamento") // departamento, casa
+  dormitorios      Int      @default(2)
+  estacionamientos Int      @default(0)
+  bodega           Boolean  @default(false)
+  status           String   @default("active") // active, paused, expired, sold
+  publishedAt      DateTime @default(now())
+  expiresAt        DateTime?
+  sourceUrl        String?
+  sourceId         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  @@unique([comuna, m2])
+  @@unique([comuna, m2, tipoPropiedad, dormitorios, estacionamientos, bodega, sourceId])
   @@map("Listing")
 }
 
 model ScrapeLog {
-  id         Int      @id @default(autoincrement())
-  startedAt  DateTime @default(now())
-  created    Int
-  updated    Int
-  durationMs Int
+  id              Int      @id @default(autoincrement())
+  startedAt       DateTime @default(now())
+  created         Int      @default(0)
+  updated         Int      @default(0)
+  durationMs      Int      @default(0)
+  status          String   @default("started") // started, completed, failed
+  message         String   @default("")
+  totalProcessed  Int      @default(0)
+  totalCreated    Int      @default(0)
+  startTime       DateTime @default(now())
+  metadata        Json?    // JSON para almacenar datos adicionales
 }
