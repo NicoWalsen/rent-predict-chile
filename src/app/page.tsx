@@ -30,8 +30,20 @@ export default function App() {
     const fetchComunas = async () => {
       try {
         const response = await fetch('/api/comunas');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
-        setComunas(data.comunas);
+        
+        // Verificar que data.comunas existe y es un array
+        if (data && Array.isArray(data.comunas)) {
+          setComunas(data.comunas);
+        } else {
+          console.warn('API response invalid, using fallback comunas');
+          setComunas(['Santiago', 'Las Condes', 'Providencia', 'Ñuñoa', 'Macul', 'Maipú', 'La Florida']);
+        }
       } catch (error) {
         console.error('Error cargando comunas:', error);
         setComunas(['Santiago', 'Las Condes', 'Providencia', 'Ñuñoa', 'Macul', 'Maipú', 'La Florida']);
