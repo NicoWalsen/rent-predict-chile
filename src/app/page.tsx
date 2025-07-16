@@ -78,37 +78,24 @@ export default function App() {
         dormitorios: dormitorios.toString()
       });
 
-      console.log('🌐 URL:', `/api/test-predict?${params.toString()}`);
+      console.log('🌐 URL:', `/api/predict-serverless?${params.toString()}`);
       
-      const response = await fetch(`/api/test-predict?${params.toString()}`);
+      const response = await fetch(`/api/predict-serverless?${params.toString()}`);
       
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
       
       const data = await response.json();
-      console.log('✅ Respuesta test recibida:', data);
+      console.log('✅ Respuesta serverless recibida:', data);
       
-      // Adaptar respuesta del test endpoint para mostrar en UI
-      if (data.success && data.data) {
-        const testResult = {
-          predicted_price: data.data.database.precioPromedio || 500000,
-          sample_size: data.data.database.comunaListings || 0,
-          confidence: 75, // Valor fijo para testing
-          percentiles: {
-            p10: Math.round((data.data.database.precioPromedio || 500000) * 0.8),
-            p25: Math.round((data.data.database.precioPromedio || 500000) * 0.9),
-            p50: data.data.database.precioPromedio || 500000,
-            p75: Math.round((data.data.database.precioPromedio || 500000) * 1.1),
-            p90: Math.round((data.data.database.precioPromedio || 500000) * 1.2)
-          },
-          market_condition: 'test'
-        };
-        setResultado(testResult);
-      } else {
-        // Mostrar error de test
-        alert(`Test failed: ${data.error || 'Unknown error'}`);
+      // Verificar si es un error
+      if (data.error) {
+        throw new Error(`Server error: ${data.error}`);
       }
+      
+      // La respuesta serverless ya tiene el formato correcto
+      setResultado(data);
       
     } catch (error) {
       console.error('❌ Error en predicción:', error);
