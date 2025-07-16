@@ -143,6 +143,7 @@ The main prediction algorithm (`/api/predict`) calculates price percentiles (P25
 - Frontend shows "Error 500" when making predictions
 - Local development works perfectly, production deployment fails
 - Database connection appears successful via `/api/health`
+- **SUPABASE_SERVICE_ROLE_KEY configured in Vercel** (July 16, 2025 - 18:20)
 
 🔧 **Debugging In Progress**:
 - Created `/api/test-predict` endpoint for step-by-step debugging
