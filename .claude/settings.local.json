@@ -43,7 +43,11 @@
       "Bash(npx eslint:*)",
       "Bash(npx tsc:*)",
       "Bash(touch:*)",
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "WebFetch(domain:rent-predict-chile.vercel.app)",
+      "Bash(vercel env:*)",
+      "Bash(vercel:*)",
+      "WebFetch(domain:rent-widget-8jkoep5lu-nicolas-walsens-projects.vercel.app)"
     ],
     "deny": []
   }
