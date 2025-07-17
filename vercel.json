@@ -21,23 +21,8 @@
   ],
   "functions": {
     "src/app/api/**": {
-      "maxDuration": 30
-    },
-    "api/predict-serverless.js": {
       "memory": 1024,
       "maxDuration": 30
-    },
-    "api/comunas.js": {
-      "memory": 1024,
-      "maxDuration": 15
-    },
-    "api/predict.js": {
-      "memory": 1024,
-      "maxDuration": 30
-    },
-    "api/health.js": {
-      "memory": 1024,
-      "maxDuration": 10
     }
   },
   "regions": ["cle1"],
