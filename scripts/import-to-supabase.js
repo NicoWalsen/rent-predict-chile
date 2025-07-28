@@ -5,7 +5,7 @@ const fs = require('fs');
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: "postgresql://postgres:Detonador07!@db.edxiveestulqjvflkrhi.supabase.co:5432/postgres"
+      url: "postgresql://postgres:Detonador07!@db.gddaxanphwolmhupkexa.supabase.co:5432/postgres"
     }
   }
 });
