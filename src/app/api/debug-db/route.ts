@@ -95,12 +95,14 @@ export async function GET() {
       ];
     }
 
-    // Test 3: Contar registros en tabla Listing si existe
-    let listingCount = null;
+    // Test 3: Obtener datos reales de Listing
+    let listingData = null;
     let listingError = null;
+    let listingCount = null;
 
     try {
-      const countResponse = await fetch(`${supabaseUrl}/rest/v1/Listing?select=count()`, {
+      // Obtener algunos registros para verificar estructura
+      const listingResponse = await fetch(`${supabaseUrl}/rest/v1/Listing?limit=5&select=*`, {
         headers: {
           'apikey': supabaseKey,
           'Authorization': `Bearer ${supabaseKey}`,
@@ -108,47 +110,82 @@ export async function GET() {
         }
       });
 
-      if (countResponse.ok) {
-        const countHeader = countResponse.headers.get('content-range');
+      if (listingResponse.ok) {
+        listingData = await listingResponse.json();
+        
+        // Obtener count del header
+        const countHeader = listingResponse.headers.get('content-range');
         if (countHeader) {
-          listingCount = parseInt(countHeader.split('/')[1]) || 0;
+          const countMatch = countHeader.match(/\/(\d+)$/);
+          listingCount = countMatch ? parseInt(countMatch[1]) : null;
         }
       } else {
-        listingError = `Count query failed: ${countResponse.status}`;
+        listingError = `Listing query failed: ${listingResponse.status} - ${await listingResponse.text()}`;
       }
     } catch (error) {
-      listingError = error instanceof Error ? error.message : 'Unknown error counting listings';
+      listingError = error instanceof Error ? error.message : 'Unknown error getting listings';
     }
 
-    // Test 4: Obtener estructura de una tabla existente
-    let tableStructure = null;
-    let structureError = null;
+    // Test 4: Verificar datos de Santiago (debería tener ~1,734 listings)
+    let santiagoData = null;
+    let santiagoError = null;
+    let santiagoCount = null;
 
     try {
-      const structureQuery = `
-        SELECT column_name, data_type, is_nullable, column_default
-        FROM information_schema.columns
-        WHERE table_name = 'Listing' AND table_schema = 'public'
-        ORDER BY ordinal_position
-      `;
-
-      const structureResponse = await fetch(`${supabaseUrl}/rest/v1/rpc/exec_sql`, {
-        method: 'POST',
+      const santiagoResponse = await fetch(`${supabaseUrl}/rest/v1/Listing?comuna=eq.Santiago&limit=3&select=*`, {
         headers: {
           'apikey': supabaseKey,
           'Authorization': `Bearer ${supabaseKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ query: structureQuery })
+          'Prefer': 'count=exact'
+        }
       });
 
-      if (structureResponse.ok) {
-        tableStructure = await structureResponse.json();
+      if (santiagoResponse.ok) {
+        santiagoData = await santiagoResponse.json();
+        
+        const countHeader = santiagoResponse.headers.get('content-range');
+        if (countHeader) {
+          const countMatch = countHeader.match(/\/(\d+)$/);
+          santiagoCount = countMatch ? parseInt(countMatch[1]) : null;
+        }
       } else {
-        structureError = `Structure query failed: ${structureResponse.status}`;
+        santiagoError = `Santiago query failed: ${santiagoResponse.status} - ${await santiagoResponse.text()}`;
       }
     } catch (error) {
-      structureError = error instanceof Error ? error.message : 'Unknown error getting structure';
+      santiagoError = error instanceof Error ? error.message : 'Unknown error getting Santiago data';
+    }
+
+    // Test 5: Verificar algunas comunas esperadas
+    const expectedComunas = ['Santiago', 'Las Condes', 'Providencia', 'Maipú', 'Ñuñoa'];
+    let comunasTest = [];
+
+    for (const comuna of expectedComunas) {
+      try {
+        const comunaResponse = await fetch(`${supabaseUrl}/rest/v1/Listing?comuna=eq.${encodeURIComponent(comuna)}&limit=1&select=comuna,precio,m2`, {
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Prefer': 'count=exact'
+          }
+        });
+
+        const countHeader = comunaResponse.headers.get('content-range');
+        const count = countHeader ? (countHeader.match(/\/(\d+)$/) ? parseInt(countHeader.match(/\/(\d+)$/)[1]) : 0) : 0;
+
+        comunasTest.push({
+          comuna: comuna,
+          count: count,
+          status: comunaResponse.status,
+          accessible: comunaResponse.status === 200
+        });
+      } catch (error) {
+        comunasTest.push({
+          comuna: comuna,
+          count: null,
+          status: 'error',
+          error: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
     }
 
     const result = {
@@ -163,11 +200,15 @@ export async function GET() {
         tables: tables,
         tables_error: tablesError,
         listing_count: listingCount,
-        listing_error: listingError
-      },
-      schema: {
-        listing_structure: tableStructure,
-        structure_error: structureError
+        listing_data: listingData,
+        listing_error: listingError,
+        santiago: {
+          count: santiagoCount,
+          sample_data: santiagoData,
+          error: santiagoError,
+          expected: '~1,734 listings'
+        },
+        comunas_test: comunasTest
       },
       environment: {
         DATABASE_URL: process.env.DATABASE_URL ? 'configured' : 'missing',
