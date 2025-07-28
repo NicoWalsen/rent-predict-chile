@@ -9,13 +9,7 @@ declare global {
 // Función para obtener cliente Prisma (optimizada para Vercel)
 function getPrismaClient() {
   if (!global.prisma) {
-    global.prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.DATABASE_URL
-        }
-      }
-    });
+    global.prisma = new PrismaClient();
   }
   return global.prisma;
 }
@@ -27,15 +21,15 @@ export async function GET(request: Request) {
     console.log('🚀 [SERVERLESS] Iniciando predicción...');
     
     // Verificar variables de entorno
-    if (!process.env.DATABASE_URL) {
-      console.error('❌ DATABASE_URL no está configurada');
+    if (!process.env.POSTGRES_PRISMA_URL) {
+      console.error('❌ POSTGRES_PRISMA_URL no está configurada');
       return NextResponse.json(
         { error: 'Database not configured' },
         { status: 500 }
       );
     }
     
-    console.log('✅ DATABASE_URL configurada:', process.env.DATABASE_URL.substring(0, 20) + '...');
+    console.log('✅ POSTGRES_PRISMA_URL configurada:', process.env.POSTGRES_PRISMA_URL.substring(0, 20) + '...');
     
     // Obtener cliente Prisma
     prisma = getPrismaClient();
