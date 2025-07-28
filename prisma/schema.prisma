@@ -1,49 +1,44 @@
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
-  schemas  = ["public"]
 }
 
 model Listing {
-  id               Int      @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   comuna           String
   m2               Int
   precio           Float
-  tipoPropiedad    String   @default("departamento") // departamento, casa
-  dormitorios      Int      @default(2)
-  estacionamientos Int      @default(0)
-  bodega           Boolean  @default(false)
-  status           String   @default("active") // active, paused, expired, sold
-  publishedAt      DateTime @default(now())
+  tipoPropiedad    String    @default("departamento")
+  dormitorios      Int       @default(2)
+  estacionamientos Int       @default(0)
+  bodega           Boolean   @default(false)
+  status           String    @default("active")
+  publishedAt      DateTime  @default(now())
   expiresAt        DateTime?
   sourceUrl        String?
   sourceId         String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   @@unique([comuna, m2, tipoPropiedad, dormitorios, estacionamientos, bodega, sourceId])
   @@map("Listing")
-  @@schema("public")
 }
 
 model ScrapeLog {
-  id              Int      @id @default(autoincrement())
-  startedAt       DateTime @default(now())
-  created         Int      @default(0)
-  updated         Int      @default(0)
-  durationMs      Int      @default(0)
-  status          String   @default("started") // started, completed, failed
-  message         String   @default("")
-  totalProcessed  Int      @default(0)
-  totalCreated    Int      @default(0)
-  startTime       DateTime @default(now())
-  metadata        Json?    // JSON para almacenar datos adicionales
-
-  @@schema("public")
+  id             Int      @id @default(autoincrement())
+  startedAt      DateTime @default(now())
+  created        Int      @default(0)
+  updated        Int      @default(0)
+  durationMs     Int      @default(0)
+  status         String   @default("started")
+  message        String   @default("")
+  totalProcessed Int      @default(0)
+  totalCreated   Int      @default(0)
+  startTime      DateTime @default(now())
+  metadata       Json?
 }
