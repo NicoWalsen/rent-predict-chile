@@ -5,6 +5,8 @@ export async function GET() {
     const envCheck = {
       NODE_ENV: process.env.NODE_ENV,
       DATABASE_URL: process.env.DATABASE_URL ? 'configured' : 'missing',
+      POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL ? 'configured' : 'missing',
+      POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING ? 'configured' : 'missing',
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'configured' : 'missing',
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'configured' : 'missing',
       VERCEL: process.env.VERCEL ? 'true' : 'false',

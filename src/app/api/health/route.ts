@@ -14,6 +14,8 @@ export async function GET() {
     // Verificar variables de entorno
     const envCheck = {
       DATABASE_URL: process.env.DATABASE_URL ? 'configured' : 'missing',
+      POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL ? 'configured' : 'missing',
+      POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING ? 'configured' : 'missing',
       SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'configured' : 'missing',
       SUPABASE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'configured' : 'missing'
     };
@@ -35,6 +37,8 @@ export async function GET() {
         error: error instanceof Error ? error.message : 'Unknown error',
         environment: {
           DATABASE_URL: process.env.DATABASE_URL ? 'configured' : 'missing',
+          POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL ? 'configured' : 'missing',
+          POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING ? 'configured' : 'missing',
           SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'configured' : 'missing',
           SUPABASE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'configured' : 'missing'
         },
