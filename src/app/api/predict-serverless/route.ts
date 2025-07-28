@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   let prisma: PrismaClient | null = null;
   
   try {
-    console.log('🚀 [SERVERLESS] Iniciando predicción...');
+    console.log('🚀 [SERVERLESS] Iniciando predicción con schema corregido...');
     
     // Verificar variables de entorno
     if (!process.env.POSTGRES_PRISMA_URL) {
