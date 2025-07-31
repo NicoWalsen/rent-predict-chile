@@ -20,9 +20,21 @@
     }
   ],
   "functions": {
-    "src/app/api/**": {
-      "memory": 1024,
+    "src/app/api/predict*/route.ts": {
+      "memory": 3009,
       "maxDuration": 30
+    },
+    "src/app/api/comunas/route.ts": {
+      "memory": 1769,
+      "maxDuration": 15
+    },
+    "src/app/api/health/route.ts": {
+      "memory": 1024,
+      "maxDuration": 10
+    },
+    "src/app/api/**/route.ts": {
+      "memory": 1024,
+      "maxDuration": 15
     }
   },
   "regions": ["cle1"],
