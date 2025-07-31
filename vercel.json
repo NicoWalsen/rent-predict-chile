@@ -21,7 +21,7 @@
   ],
   "functions": {
     "src/app/api/predict*/route.ts": {
-      "memory": 3009,
+      "memory": 2048,
       "maxDuration": 30
     },
     "src/app/api/comunas/route.ts": {
